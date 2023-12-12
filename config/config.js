@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-    host: "viaduct.proxy.rlwy.net",
-    user: "root",
-    password: "c4H2E3BD2hA5gG1EAfBCgdGF1hd6gD6E"
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD
 });
 
 con.connect(function (err) {
