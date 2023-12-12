@@ -2,7 +2,7 @@ const con = require('../config/config');
 
 class menuModel {
     static getAllMenu(req, res, next) {
-        let query = `SELECT * FROM ${'`db_restaurant`'}.tb_menu
+        let query = `SELECT * FROM ${'`railway`'}.tb_menu
                     WHERE deleted_at IS NULL`
         con.query(query, function(err, result, fields) {
             if (err) {
@@ -13,8 +13,8 @@ class menuModel {
     }
 
     static getMenu(req, res, next) {
-        let id_menu = req.body.id_menu;
-        let query = `SELECT * FROM ${'`db_restaurant`'}.tb_menu WHERE id_menu = ` + id_menu
+        let id = req.body.id;
+        let query = `SELECT * FROM ${'`railway`'}.tb_menu WHERE id = ` + id
 
         con.query(query, function(err, result, fields) {
             if (err) res.status(400).send(err);
@@ -29,13 +29,15 @@ class menuModel {
         if (!harga) return res.send('Kolom harga tidak boleh kosong!');
         if (!kategori) return res.send('Kolom kategori tidak boleh kosong!');
         if (!stok) return res.send('Kolom stok tidak boleh kosong!');
+        if (!deskripsi) return res.send('Kolom deskripsi tidak boleh kosong!');
         
         if (typeof nama != 'string') return res.send('Kolom nama harus string!');
         if (typeof harga != 'number') return res.send('Kolom harga harus number!');
         if (typeof kategori != 'string') return res.send('Kolom kategori harus string!');
         if (typeof stok != 'number') return res.send('Kolom stok harus number!');
+        if (typeof deskripsi != 'string') return res.send('Kolom deskripsi harus string!');
 
-        let query = `INSERT INTO ${'`db_restaurant`'}.tb_menu SET 
+        let query = `INSERT INTO ${'`railway`'}.tb_menu SET 
                     nama = '${nama}', harga = '${harga}', kategori = '${kategori}', stok = '${stok}'`;
         con.query(query, function(err, result, fields) {
             if (err) {
@@ -51,22 +53,24 @@ class menuModel {
     }
 
     static updateMenu(req, res, next) {
-        let { id_menu, nama, harga, kategori, stok } = req.body;
+        let { id, nama, harga, kategori, stok } = req.body;
         let updated_at = `CURRENT_TIMESTAMP`;
 
-        if (!id_menu) return res.send('Kolom id_menu tidak boleh kosong!');
+        if (!id) return res.send('Kolom id tidak boleh kosong!');
         if (!nama) return res.send('Kolom nama tidak boleh kosong!');
         if (!harga) return res.send('Kolom harga tidak boleh kosong!');
         if (!kategori) return res.send('Kolom kategori tidak boleh kosong!');
         if (!stok) return res.send('Kolom stok tidak boleh kosong!');
+        if (!deskripsi) return res.send('Kolom deskripsi tidak boleh kosong!');
         
-        if (typeof id_menu != 'number') return res.send('Kolom id_menu harus number!');
+        if (typeof id != 'number') return res.send('Kolom id harus number!');
         if (typeof nama != 'string') return res.send('Kolom nama harus string!');
         if (typeof harga != 'number') return res.send('Kolom harga harus number!');
         if (typeof kategori != 'string') return res.send('Kolom kategori harus string!');
         if (typeof stok != 'number') return res.send('Kolom stok harus number!');
+        if (typeof deskripsi != 'string') return res.send('Kolom deskripsi harus string!');
 
-        let query = `UPDATE ${'`db_restaurant`'}.tb_menu SET `;
+        let query = `UPDATE ${'`railway`'}.tb_menu SET `;
 
         if (nama) query += ` nama = '${nama}',`;
         if (harga) query += ` harga = '${harga}',`;
@@ -75,7 +79,7 @@ class menuModel {
         query += ` updated_at = ${updated_at},`
 
         query = query.slice(0, -1);
-        query += ` WHERE id_menu = ${id_menu} `;
+        query += ` WHERE id = ${id} `;
         query += ` AND deleted_at IS NULL`
 
         con.query(query, function(err, result, fields) {
@@ -85,13 +89,13 @@ class menuModel {
     }
 
     static deleteMenu(req, res, next) {
-        let id_menu = req.params.id_menu;
+        let id = req.params.id;
         let deleted_at = `CURRENT_TIMESTAMP`;
 
         console.log(req);
 
-        let query = `UPDATE ${'`db_restaurant`'}.tb_menu SET deleted_at = ${deleted_at} 
-                    WHERE id_menu = ` + id_menu
+        let query = `UPDATE ${'`railway`'}.tb_menu SET deleted_at = ${deleted_at} 
+                    WHERE id = ` + id
         query += ` AND deleted_at IS NULL`
 
         con.query(query, function (err, result, fields) {

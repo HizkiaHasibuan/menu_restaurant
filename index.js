@@ -1,7 +1,7 @@
 const router = require('./routes/router');
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = 40643;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
